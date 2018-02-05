@@ -1,61 +1,74 @@
 <?php
 
-class imap_labels extends rcube_plugin {
-	public $task = 'mail';
-	private $rc;
-	private $map;
+class imap_labels extends rcube_plugin
+{
 
-	function init() {
-		$this->rc = rcmail::get_instance();
-		$this->load_config();
-		$this->add_texts('localization/', false);
+	private $app;
 
-		if ($this->rc->action == 'print')
-			return;
+	function init()
+	{
+		$this->app = rcmail::get_instance();
 
-		$this->rc->output->set_env('imap_label_colors', $this->rc->config->get('imap_known_labels'));
+		if ($this->app->action == 'print') return;
+
+		$this->app->output->set_env('imap_label_colors', $this->get_user_labels($this->app->user->ID));
 
 		$this->include_script('imap_labels.js');
-		$this->include_stylesheet('imap_labels.css');
 		$this->add_hook('messages_list', array($this, 'read_flags'));
 
 		$this->name = get_class($this);
-		$this->message_imap_labels = array();
 	}
 
-	public function read_flags($args) {
+	public function read_flags($args)
+	{
 		if (!isset($args['messages']) or !is_array($args['messages']))
 			return $args;
 
-		$knownflags = $this->rc->config->get('imap_known_labels');
-		if (!is_array($knownflags))
-			return $args; # return if no known flags are defined
+		$knownflags = $this->get_user_labels($this->app->user-ID);
+		if (!is_array($knownflags) or count($knownflags) == 0)
+			return $args;
 
-		foreach ($args['messages'] as $message) {
+		foreach ($args['messages'] as $message)
+		{
 			$message->list_flags['extra_flags']['imap_labels'] = array();
-			if (is_array($message->flags)) {
-				foreach ($message->flags as $flagname => $flagvalue) {
-					$flag = is_numeric("$flagvalue") ? $flagname : $flagvalue;
-					$flag = strtolower($flag);
-					foreach ($knownflags as $knownflag => $flagcolor) {
-						if ($flag == $knownflag)
-							$message->list_flags['extra_flags']['imap_labels'][] = $flag;
-					}
-				}
+			if (!is_array($message->flags))
+				continue;
+
+			foreach ($message->flags as $flagname => $flagvalue)
+			{
+				$flag = is_numeric("$flagvalue") ? $flagname : $flagvalue;
+				$flag = strtolower($flag);
+				if (array_key_exists($flag, $knownflags))
+					$message->list_flags['extra_flags']['imap_labels'][] = $flag;
 			}
 		}
-
-		return $args;
 	}
 
-	public function imap_label_button() {
-		$knownflags = $this->rc->config->get('imap_known_labels');
-		$out = '<div id="imap_label_button" class="buttonmenu"><ul class="toolbarmenu">';
+	function get_user_labels($userId)
+	{
+		$dbh = $this->get_dbh();
+		$sql_result = $dbh->query(preg_replace('/%u/', $dbh->escape($userId), 'SELECT label, name, red, green, blue FROM imap_labels WHERE userId = %u'));
 
-		foreach ($knownflags as $flagname => $flagvalue) {
-			$out .= '<li class="'..'"></li>'
+		$result = array();
+		while ($sql_arr = $dbh->fetch_array($sql_result))
+		{
+			$result[strtolower($sql_arr[0])] = array(
+				'name' => $sql_arr[1],
+				'color' => array(
+					'red' => $sql_arr[2],
+					'green' => $sql_arr[3],
+					'blue' => $sql_arr[4],
+				)
+			);
 		}
-
-		$out .= '</ul></div>';
+		return $result;
 	}
+
+	function get_dbh()
+	{
+		return $this->app->get_dbh();
+	}
+
 }
+
+?>
