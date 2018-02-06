@@ -20,7 +20,6 @@ class imap_labels extends rcube_plugin {
 		$this->add_hook('messages_list', array($this, 'read_flags'));
 
 		$this->name = get_class($this);
-		$this->message_imap_labels = array();
 	}
 
 	public function read_flags($args) {
@@ -46,16 +45,5 @@ class imap_labels extends rcube_plugin {
 		}
 
 		return $args;
-	}
-
-	public function imap_label_button() {
-		$knownflags = $this->rc->config->get('imap_known_labels');
-		$out = '<div id="imap_label_button" class="buttonmenu"><ul class="toolbarmenu">';
-
-		foreach ($knownflags as $flagname => $flagvalue) {
-			$out .= '<li class="'..'"></li>'
-		}
-
-		$out .= '</ul></div>';
 	}
 }
