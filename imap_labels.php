@@ -3,20 +3,17 @@
 class imap_labels extends rcube_plugin
 {
 
-	private $app;
-
 	function init()
 	{
-		$this->app = rcmail::get_instance();
+		$rcube = rcube::get_instance();
 
-		if ($this->app->action == 'print') return;
-
-		$this->app->output->set_env('imap_label_colors', $this->get_user_labels($this->app->user->ID));
-
-		$this->include_script('imap_labels.js');
-		$this->add_hook('messages_list', array($this, 'read_flags'));
-
-		$this->name = get_class($this);
+		switch ($rcube->task)
+		{
+			case 'mail':
+				$this->include_script('imap_labels.js');
+				$this->add_hook('messages_list', array($this, 'read_flags'));
+				break;
+		}
 	}
 
 	public function read_flags($args)
@@ -24,7 +21,9 @@ class imap_labels extends rcube_plugin
 		if (!isset($args['messages']) or !is_array($args['messages']))
 			return $args;
 
-		$knownflags = $this->get_user_labels($this->app->user-ID);
+		$rcube = rcube::get_instance();
+		$knownflags = $this->get_user_labels($rcube->user-ID);
+		$rcube->output->set_env('imap_label_colors', $knownflags);
 		if (!is_array($knownflags) or count($knownflags) == 0)
 			return $args;
 
@@ -66,7 +65,7 @@ class imap_labels extends rcube_plugin
 
 	function get_dbh()
 	{
-		return $this->app->get_dbh();
+		return rcube::get_instance()->get_dbh();
 	}
 
 }
