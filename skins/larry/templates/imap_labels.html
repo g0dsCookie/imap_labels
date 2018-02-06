@@ -1,0 +1,45 @@
+<roundcube:object name="doctype" value="html5" />
+<html>
+<head>
+
+	<title><roundcube:object name="pagetitle" /></title>
+	<roundcube:include file="/includes/links.html" />
+
+</head>
+<body class="noscroll">
+
+	<roundcube:include file="/includes/header.html" />
+
+	<h1 class="voice"><roundcube:label name="settings" /> : <roundcube:label name="imap_label" /></h1>
+
+	<div id="mainscreen" class="offset">
+
+		<roundcube:include file="/includes/settingstabs.html" />
+
+		<div id="settings-right" role="main">
+			<div id="imaplabelslistbox" class="uibox listbox" aria-labelledby="aria-label-imaplabels">
+				<h2 class="boxtitle" id="aria-label-imaplabels"><roundcube:label name="imap_labels.imap_labels" /></h2>
+
+				<div class="scroller withfooter">
+					<roundcube:object name="imaplabelslist" id="imaplabelslist" class="listing" type="list" noheader="true" role="listbox" />
+				</div>
+
+				<div class="boxfooter">
+					<roundcube:button command="plugin.imap_labels-labeladd" type="link" title="imap_labels.labeladd" class="listbutton add disabled" classAct="listbutton add" innerClass="inner" content="+" />
+				</div>
+			</div>
+		</div>
+
+		<div id="label-box" class="uibox contentbox">
+			<div class="iframebox" role="complementary" aria-labelledby="aria-label-labelform">
+				<h2 id="aria-label-labelform" class="voice"><roundcube:label name="imap_labels.labelform" /></h2>
+				<roundcube:object name="labelframe" id="label-frame" style="width: 100%; height: 100%;" frameborder="0" src="/watermark.html" title="imap_labels.arialabel-labelform" />
+			</div>
+		</div>
+
+	</div>
+
+	<roundcube:include file="/includes/footer.html" />
+
+</body>
+</html>
