@@ -28,18 +28,33 @@
 					<roundcube:button command="plugin.imap_labels-labeladd" type="link" title="imap_labels.labeladd" class="listbutton add disabled" classAct="listbutton add" innerClass="inner" content="+" />
 				</div>
 			</div>
-		</div>
 
-		<div id="label-box" class="uibox contentbox">
-			<div class="iframebox" role="complementary" aria-labelledby="aria-label-labelform">
-				<h2 id="aria-label-labelform" class="voice"><roundcube:label name="imap_labels.labelform" /></h2>
-				<roundcube:object name="labelframe" id="label-frame" style="width: 100%; height: 100%;" frameborder="0" src="/watermark.html" title="imap_labels.arialabel-labelform" />
+			<div id="labelsscreen">
+				<div id="label-box" class="uibox contentbox">
+					<div class="iframebox" role="complementary" aria-labelledby="aria-label-imaplabels">
+						<h2 id="aria-label-imaplabels" class="voice"><roundcube:label name="imap_labels.arialabel-labelform" /></h2>
+						<roundcube:object name="labelframe" id="label-frame" style="width:100%;height:100%;" frameborder="0" src="/watermark.html" title="imap_labels.arialabel-labelform" />
+					</div>
+				</div>
 			</div>
 		</div>
 
 	</div>
 
 	<roundcube:include file="/includes/footer.html" />
+
+	<script type="text/javascript">
+	new rcube_splitter({
+		id: 'imaplabelssplitter1',
+		p1: '#imaplabelslistbox',
+		p2: '#labelsscreen',
+		orientation: 'v',
+		relative: true,
+		start: 156,
+		min: 120,
+		size: 12
+	}).init();
+	</script>
 
 </body>
 </html>

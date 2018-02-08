@@ -13,5 +13,71 @@
 	top: 0;
 	right: 0;
 	bottom: 0;
-	left: 192px;
+	left: 0px;
+}
+
+#imaplabelslist
+{
+	width: 100%;
+	table-layout: fixed;
+}
+
+#imaplabelslist tbody td
+{
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#imaplabelslist tbody tr.disabled td
+{
+	color: #87A3AA;
+	text-decoration: line-through;
+}
+
+#imaplabelslist tbody tr.filtermoveup td
+{
+	border-top: 2px dotted #555 !important;
+	padding-top: 5px;
+}
+
+#imaplabelslist tbody tr.filtermovedown td
+{
+	border-bottom: 2px dotted #555 !important;
+	padding-bottom: 4px;
+}
+
+#labelsscreen
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0px;
+}
+
+#label-frame
+{
+	border-radius: 4px;
+}
+
+#label-form
+{
+	min-width: 550px;
+	white-space: nowrap;
+	padding: 20px 10px 10px 10px;
+}
+
+#label-form legend, #label-form label
+{
+	color: #666666;
+	vertical-align: middle;
+}
+
+#labelform label
+{
+	display: inline-block;
+	width: 40px;
+	text-align: right;
+	padding-right: 5px;
 }
