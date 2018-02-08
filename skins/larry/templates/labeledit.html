@@ -1,0 +1,22 @@
+<roundcube:object name="doctype" value="html5" />
+<html>
+	<head>
+		<title><roundcube:object name="pagetitle" /></title>
+		<roundcube:include file="/includes/links.html" />
+	</head>
+	<body class="iframe">
+
+		<div id="label-title" class="boxtitle"><roundcube:label name="imap_labels.labelform" /></div>
+
+		<div id="label-form" class="boxcontent">
+			<roundcube:object name="labelform" />
+
+			<div id="footer">
+				<div class="footerleft formbuttons floating">
+					<roundcube:button command="plugin.imap_labels-save" type="input" class="button mainaction" label="save" />
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>
