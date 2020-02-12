@@ -8,6 +8,7 @@ class imap_labels extends rcube_plugin
 	function init()
 	{
 		$this->rc = rcube::get_instance();
+		$this->init_ui();
 
 		switch ($this->rc->task)
 		{
@@ -21,18 +22,15 @@ class imap_labels extends rcube_plugin
 					'title' => 'imap_labels',
 					'domain' => $this->ID,
 					'type' => 'link',
-					'content' => ' ',
+					'content' => $this->gettext("imap_labels"),
 					'class' => 'button',
 				), 'toolbar');
-
-				$this->init_ui();
 				break;
 			case 'settings':
 				$this->register_action('plugin.imap_labels-settings', array($this, 'imap_labels_settings'));
 				$this->register_action('plugin.imap_labels-load', array($this, 'imap_labels_loadlabel'));
 				$this->register_action('plugin.imap_labels-save', array($this, 'imap_labels_save'));
 				$this->add_hook('settings_actions', array($this, 'settings_actions'));
-				$this->init_ui();
 				break;
 		}
 	}
